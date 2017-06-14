@@ -1,6 +1,6 @@
 <?php
 
-namespace dclaysmith\ApiSeeder;
+namespace dclaysmith\AdHocSeeder;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -20,7 +20,7 @@ class CsvSeederServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('dclaysmith/api-seeder');
+		$this->package('dclaysmith/adhoc-seeder');
 	}
 
 	/**

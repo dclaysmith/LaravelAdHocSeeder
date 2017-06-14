@@ -1,6 +1,6 @@
 <?php
 
-namespace dclaysmith\ApiSeeder;
+namespace dclaysmith\AdHocSeeder;
 
 use App;
 use Log;
@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Schema;
 use GuzzleHttp\Client;
 
-class ApiSeeder extends Seeder
+class AdHocSeeder extends Seeder
 {
 
     /**
@@ -161,28 +161,12 @@ class ApiSeeder extends Seeder
                 continue 2;
             }
 
-            // No mapping specified - grab the first CSV row and use it
-            if ( !$mapping )
-            {
-                $mapping = $row;
-                $mapping[0] = $this->stripUtf8Bom($mapping[0]);
 
-                // skip csv columns that don't exist in the database
-                foreach($mapping  as $index => $fieldname){
-                    if (!\DB::getSchemaBuilder()->hasColumn($this->table, $fieldname)){
-                       array_pull($mapping, $index);
-                    }
-                }
-            }
-            else
-            {
-                $row = $this->readRow($row, $mapping);
-                // insert only non-empty rows from the csv file
-                if ( !$row ) continue;
+            $row = $this->readRow($row, $mapping);
 
-                $this->insert($row);
+            if ( !$row ) continue;
 
-            }
+            $this->insert($row);
         }
 
         fclose($handle);
@@ -223,26 +207,7 @@ class ApiSeeder extends Seeder
      * @param array $seedData
      * @return bool   TRUE on success else FALSE
      */
-    public function insert( array $seedData )
-    {
-        try {
-
-            $postData = $this->formatter($seedData);
-
-            $this->httpClient->request('POST', $this->endpoint, [
-                'json' => $postData
-            ]);
-
-            // $res = $this->httpClient->sendAsync(
-            //     new \GuzzleHttp\Psr7\Request('POST', $this->endpoint, [ 'json' => $postData ])
-            // );
-        } catch (\Exception $e) {
-            Log::error("CSV insert failed: " . $e->getMessage() . " - CSV " . $this->filename);
-            return FALSE;
-        }
-
-        return TRUE;
-    }
+    abstract public function insert( array $seedData );
 
     public function formatter($data) {
         return $data;
