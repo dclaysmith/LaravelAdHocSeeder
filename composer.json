@@ -1,5 +1,5 @@
 {
-    "name": "dclaysmith/api-seeder",
+    "name": "dclaysmith/adhoc-seeder",
     "description": "Allows seeding of the database with API calls",
     "keywords": ["laravel", "api", "seed", "seeds", "seeding"],
     "license": "MIT",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "dclaysmith\\ApiSeeder\\": "src/"
+            "dclaysmith\\AdHocSeeder\\": "src/"
         }
     },
     "minimum-stability": "dev"
