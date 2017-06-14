@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Schema;
 use GuzzleHttp\Client;
 
-class AdHocSeeder extends Seeder
+abstract class AdHocSeeder extends Seeder
 {
 
     /**
@@ -160,9 +160,6 @@ class AdHocSeeder extends Seeder
                 $offset--;
                 continue 2;
             }
-
-
-            $row = $this->readRow($row, $mapping);
 
             if ( !$row ) continue;
 
